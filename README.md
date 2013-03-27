@@ -18,6 +18,14 @@ Sample
    "sm_pkgsrc"=>"http://pkgsrc.joyent.com/sdc6/2012Q2/x86_64/All"}}
 </code></pre>
 
+
+Install from github
+----
+
+Install to /opt/local/etc/ohai/plugins
+
+    curl -skf https://raw.github.com/ZCloud-Firstserver/ohai_plugin_joyent/master/install.sh | sh
+
 Output Test
 ----
 
