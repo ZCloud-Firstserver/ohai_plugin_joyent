@@ -14,14 +14,12 @@ if platform == "smartos" then
   joyent Mash.new
 
   # get uuid
-  zonename  = Mixlib::ShellOut.new("/usr/bin/zonename")
-  zonename.run_command
-  joyent[:sm_uuid] = zonename.stdout.chomp
+  status, stdout, stderr  = run_command(:no_status_check => true, :command => "/usr/bin/zonename")
+  joyent[:sm_uuid] = stdout.chomp
 
   # get zone id unless globalzone
-  sm_id = Mixlib::ShellOut.new("/usr/sbin/zoneadm list -p | awk -F: '{ print $1 }'")
-  sm_id.run_command
-  joyent[:sm_id] = sm_id.stdout.chomp unless joyent[:sm_uuid] == "global"
+  status, stdout, stderr  = run_command(:no_status_check => true, :command => "/usr/sbin/zoneadm list -p | awk -F: '{ print $1 }'")
+  joyent[:sm_id] = stdout.chomp unless joyent[:sm_uuid] == "global"
   
   # retrieve image name and pkgsrc
   if ::File.exists?("/etc/product") then
