@@ -39,6 +39,7 @@ if platform == "smartos" then
     end
 
     ## retrieve pkgsrc
-    joyent[:sm_pkgsrc] = `cat /opt/local/etc/pkg_install.conf | awk -F= '{ print $2 }'`.chomp
+    sm_pkgsrc = ::File.read("/opt/local/etc/pkg_install.conf").split("=")
+    joyent[:sm_pkgsrc] = sm_pkgsrc[1].chomp
   end
 end
