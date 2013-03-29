@@ -60,6 +60,7 @@ describe Ohai::System, "plugin joyent" do
         stdout = "99\n"
         stderr = ""
         @ohai.stub!(:run_command).with(:no_status_check => true, :command => "/usr/sbin/zoneadm list -p | awk -F: '{ print $1 }'").and_return([status, stdout, stderr])
+
       end
 
       it "should retrive zone uuid" do
@@ -72,13 +73,32 @@ describe Ohai::System, "plugin joyent" do
         @ohai[:joyent][:sm_id].should == "99"
       end
 
-       it "should retrive pkgsrc" do
-          # file stub /opt/local/etc/pkg_install.conf
-          ::File.should_receive(:read).with("/opt/local/etc/pkg_install.conf").and_return("PKG_PATH=http://pkgsrc.joyent.com/packages/SmartOS/2012Q4/x86_64/All\n")
+      it "should ditect products" do
+        ::File.should_receive(:exist?).with("/etc/product").and_return(true)
+        # ::File.should_receive(:open).with("/etc/product")
+        ## mock file.open /etc/product
 
-         @ohai._require_plugin("joyent")
-         @ohai[:joyent][:sm_pkgsrc].should == "http://pkgsrc.joyent.com/packages/SmartOS/2012Q4/x86_64/All"
-       end
+        product_file = <<-EOL
+Name: Joyent SmartMachine
+Image: base64 1.9.1
+Documentation: http://wiki.joyent.com/jpc2/SmartMachine+Base
+EOL
+
+        # mock_product = mock() 
+        # ToDo: mock doedn/t work..
+#        file_mock = mock(::File, :open => StringIO.new(product_file))
+#        ::File.should_receive(:open).with("/etc/product").and_return(file_mock)
+
+        @ohai._require_plugin("joyent")
+      end
+
+      it "should retrive pkgsrc" do
+        # file stub /opt/local/etc/pkg_install.conf
+        ::File.should_receive(:read).with("/opt/local/etc/pkg_install.conf").and_return("PKG_PATH=http://pkgsrc.joyent.com/packages/SmartOS/2012Q4/x86_64/All\n")
+
+        @ohai._require_plugin("joyent")
+        @ohai[:joyent][:sm_pkgsrc].should == "http://pkgsrc.joyent.com/packages/SmartOS/2012Q4/x86_64/All"
+      end
     end
   end
 end
