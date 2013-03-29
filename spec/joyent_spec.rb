@@ -72,14 +72,13 @@ describe Ohai::System, "plugin joyent" do
         @ohai[:joyent][:sm_id].should == "99"
       end
 
-#       it "should retrive pkgsrc" do
-#         # file stub /opt/local/etc/pkg_install.conf
-#         file = mock
-#         ::File.stub!(:read).with("/opt/local/etc/pkg_install.conf").and_return("PKG_PATH=http://pkgsrc.joyent.com/packages/SmartOS/2012Q4/x86_64/All\n")
-# 
-#         @ohai._require_plugin("joyent")
-#         @ohai[:joyent][:sm_pkgsrc].should == "http://pkgsrc.joyent.com/packages/SmartOS/2012Q4/x86_64/All"
-#       end
+       it "should retrive pkgsrc" do
+          # file stub /opt/local/etc/pkg_install.conf
+          ::File.should_receive(:read).with("/opt/local/etc/pkg_install.conf").and_return("PKG_PATH=http://pkgsrc.joyent.com/packages/SmartOS/2012Q4/x86_64/All\n")
+
+         @ohai._require_plugin("joyent")
+         @ohai[:joyent][:sm_pkgsrc].should == "http://pkgsrc.joyent.com/packages/SmartOS/2012Q4/x86_64/All"
+       end
     end
   end
 end
