@@ -62,5 +62,5 @@ License and Authors
 -------------------
 Authors: sawanoboryu@higanworks.com (HiganWorks LLC)
 
-Licensed under MIT https://github.com/higanworks/LICENSES
+Licensed under the Apache License, Version 2.0 (the "License");
 
