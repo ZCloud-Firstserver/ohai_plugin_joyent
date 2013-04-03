@@ -35,7 +35,7 @@ if platform == "smartos" then
   joyent[:sm_id] = stdout.chomp unless joyent[:sm_uuid] == "global"
   
   # retrieve image name and pkgsrc
-  if ::File.exists?("/etc/product") then
+  if ::File.exist?("/etc/product") then
     ::File.open("/etc/product") do |file|
       while line = file.gets
         case line
